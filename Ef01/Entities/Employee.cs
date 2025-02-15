@@ -10,11 +10,13 @@ namespace Ef01.Entities
     {
         public int Id { get; set; } //Pk [identity contain(1,1)]
 
-        public string?  Name { get; set; } //nullable<string> Allow null
+        public string?  EmpName { get; set; } //nullable<string> Allow null
                                            //nvarchar(max)
 
         public decimal Salary { get; set; } //Decimal(18,12)
 
         public int? Age { get; set; }  //Int
+
+        
     }
 }
