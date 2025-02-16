@@ -4,14 +4,16 @@ using Ef01.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ef01.Migrations
 {
     [DbContext(typeof(EnterpriseDBContext))]
-    partial class EnterpriseDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250216212550_DepartmentTableMigration")]
+    partial class DepartmentTableMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
