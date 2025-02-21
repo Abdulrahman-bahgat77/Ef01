@@ -1,7 +1,7 @@
 ﻿using Ef01.Configurations;
 using Ef01.Entities;
 using Ef01.Migrations;
-using FluentApis;
+ 
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,38 +19,91 @@ namespace Ef01.Context
              
             optionsBuilder.UseSqlServer("Server= .; Database = Enterprise;Trusted_Connection = true");
         }
-        public DbSet<Employee>  Employees{ get; set; }
+        public DbSet<Employee> Employees{ get; set; }
         public DbSet<Products> Products { get; set; }
         public DbSet<Projects> Projects { get; set; }
-        public DbSet<Department> MyProperty { get; set; }
+          public DbSet<Department> Departments { get; set; }
 
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Course> Course { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region Fluent Apis
+            //fluentApis
+            #region FluentApis
             //modelBuilder.Entity<Employee>()
-            //    .Property(e => e.EmpName)
-            //    .HasDefaultValue("Test");
+            //   .Property(E =>E.EmpName)
+            //   .HasDefaultValue("Test")
+            //   .IsRequired(false);
 
+            // modelBuilder.Entity<Department>().ToTable("Departments");
+            //modelBuilder.Entity<Department>()
+            //      .HasKey(D=>D.Id);
+
+            //  modelBuilder.Entity<Department>()
+            //          .Property(D => D.Id)
+            //          .UseIdentityColumn(10,10);
+            //  modelBuilder.Entity<Department>()
+            //   .Property(D => D.Name)
+            //   .HasColumnName("Department Name")
+            //   .HasColumnType("varchar")  
+            //   .HasMaxLength(50)
+            //   .HasDefaultValue("Test")
+            //   .IsRequired(false);
+
+            //  modelBuilder.Entity<Department>()
+            //      .Property(D => D.DateOfCreation)
+            //      .HasDefaultValueSql("GETDATE()");
+            #endregion
+
+            #region EF3.1 Feature
             //modelBuilder.Entity<Department>(E =>
             //{
 
-            //   E.HasKey(D => D.Id);
+            //      E.HasKey(D => D.Id);
 
-            //       E.Property(D => D.Id)
-            //        .UseIdentityColumn(10, 10);
+            //      E.Property(D => D.Id)
+            //    .UseIdentityColumn(10, 10);
+
+            //     E.Property(D => D.Name)
+            //     .HasColumnName("Department Name")
+            //     .HasColumnType("varchar")
+            //     .HasMaxLength(50)
+            //     .HasDefaultValue("Test")
+            //     .IsRequired(false);
 
 
-            //       E.Property(D => D.Name)
-            //        .HasColumnName("DepartmentName")
-            //        .HasMaxLength(50)
-            //        .IsRequired(false);
-            //    E.Property(D=>D.DateOfCreation)
-            //    .hasDefaultValueSql("GETDATE()");
-
+            //        E.Property(D => D.DateOfCreation)
+            //        .HasDefaultValueSql("GETDATE()");
             //});
             #endregion
 
-            modelBuilder.ApplyConfiguration(new DepartmentsConfiguration());
+
+          
+           modelBuilder.ApplyConfiguration<Department>(new DepartmentConfiguration());
+
+            modelBuilder.Entity<Department>()
+              .HasMany(D => D.Employees)
+              .WithOne(E => E.Departments)
+              .HasForeignKey(E => E.DepartmentsId)
+              .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<Student>()
+            //    .HasMany(S => S.Courses)
+            //    .WithMany(C => C.Students);
+
+
+        modelBuilder.Entity<CourseStudent>()
+                .HasKey(CS => new { CS.CoursesId, CS.StudentsId });
+
+         modelBuilder.Entity<Student>()
+                 .HasMany(S=>S.CourseStudentes)
+                 .WithOne(CS=>CS.Student)
+                 .HasForeignKey(CS=>CS.StudentsId);
+
+            modelBuilder.Entity<Course>()
+                .HasMany(C => C.CourseStudentes)
+                .WithOne(CS => CS.Course);
+
             base.OnModelCreating(modelBuilder);
         }
     }

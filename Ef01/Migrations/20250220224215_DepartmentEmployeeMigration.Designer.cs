@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ef01.Migrations
 {
     [DbContext(typeof(EnterpriseDBContext))]
-    [Migration("20250216202621_Delete Department")]
-    partial class DeleteDepartment
+    [Migration("20250220224215_DepartmentEmployeeMigration")]
+    partial class DepartmentEmployeeMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,30 @@ namespace Ef01.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Ef01.Entities.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 10)
+                        .HasAnnotation("SqlServer:IdentitySeed", 10)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateOfCreation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasDefaultValue("Test")
+                        .HasColumnName("Department Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Departments");
+                });
+
             modelBuilder.Entity("Ef01.Entities.Employee", b =>
                 {
                     b.Property<int>("Id")
@@ -29,6 +53,9 @@ namespace Ef01.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DepartmentsId")
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
@@ -46,6 +73,8 @@ namespace Ef01.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentsId");
 
                     b.ToTable("Employees");
                 });
@@ -72,6 +101,20 @@ namespace Ef01.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("Ef01.Entities.Employee", b =>
+                {
+                    b.HasOne("Ef01.Entities.Department", "Departments")
+                        .WithMany("Eployees")
+                        .HasForeignKey("DepartmentsId");
+
+                    b.Navigation("Departments");
+                });
+
+            modelBuilder.Entity("Ef01.Entities.Department", b =>
+                {
+                    b.Navigation("Eployees");
                 });
 #pragma warning restore 612, 618
         }

@@ -2,7 +2,7 @@
 
 namespace Ef01.Migrations
 {
-    public partial class DeleteDepartment : Migration
+    public partial class DropDepartmentTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

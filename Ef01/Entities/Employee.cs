@@ -27,5 +27,9 @@ namespace Ef01.Entities
         [DataType(DataType.Password)]
         public int Password { get; set; }
 
+        [ForeignKey("Departments")]
+        public int? DepartmentsId { get; set; }
+        public Department Departments { get; set; }
+        //Nevagation Property=>One
     }
 }
