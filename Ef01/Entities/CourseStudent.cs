@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Ef01.Entities
 {
-    class CourseStudent
+    public class CourseStudent
     {
         [ForeignKey("Student")]
         public int StudentsId { get; set; }
         [ForeignKey("Course")]
         public int CoursesId { get; set; }
         public int Grade { get; set; }
-      public  Student Student { get; set; }
-        public Course Course { get; set; }
+      public virtual Student Student { get; set; }
+        public virtual Course Course { get; set; }
     }
 }

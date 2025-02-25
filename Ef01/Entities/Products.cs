@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ef01.Entities
 {
-    internal class Products
+    public class Products
     {
         public int id { get; set; }
     }

@@ -15,7 +15,7 @@ namespace Ef01
     {
         static void Main(string[] args)
         {
-           EnterpriseDBContext dbContext=new EnterpriseDBContext();
+          // EnterpriseDBContext dbContext=new EnterpriseDBContext();
 
             #region Session 1 
             //DbContext.Employees.Add();
@@ -124,14 +124,86 @@ namespace Ef01
             //Many To Many RealationShip
 
             // By:
-                  //1.By Convention(Default Behavior)
-                  //2.Data Annotation(Set Of Attributes Used For Data Validation)
-                  //3.Fluent APIs(DbContext → Override OnModelCreating()) ==========>Used in make Composite PrimaryKey
-                  //4.Configuration Class Per Entity(Organization To 3rd Way)
+            //1.By Convention(Default Behavior)
+            //2.Data Annotation(Set Of Attributes Used For Data Validation)
+            //3.Fluent APIs(DbContext → Override OnModelCreating()) ==========>Used in make Composite PrimaryKey
+            //4.Configuration Class Per Entity(Organization To 3rd Way)
 
             #endregion
 
+            #region Session3
+            using EnterpriseDBContext dbContext = new EnterpriseDBContext();
+            #region Without Loading
+            //var Employee=(from e in dbContext.Employees
+            //             where e.Id==5
+            //             select e).FirstOrDefault();
 
+            //Console.WriteLine($"Name={Employee?.EmpName??"Not Found"}::DepId={Employee?.Departments?.Name??"Not Found"}");
+
+            //var Department = (from d in dbContext.Departments
+            //                  where d.Id == 30
+            //                  select d).FirstOrDefault();
+            //Console.WriteLine($"Id={Department?.Name??"Not Found"}");
+            #endregion
+
+            #region Explicit Loading
+            //var Employee = (from e in dbContext.Employees
+            //                where e.Id == 5
+            //                select e).FirstOrDefault();
+            //dbContext.Entry(Employee).Reference(E => E.Departments).Load();
+            //Console.WriteLine($"name={Employee.EmpName}::{Employee.Departments.Name}");
+            //Console.WriteLine("=========================");
+            //var Department = (from d in dbContext.Departments
+            //                  where d.Id == 30
+            //                  select d).FirstOrDefault();
+
+            //dbContext.Entry(Department).Collection(D => D.Employees).Load();
+            //foreach (var item in Department.Employees)
+            //{
+            //    Console.WriteLine($"Name={item.EmpName}");
+            //}
+            #endregion
+
+            #region Eager Loading
+            //pros:
+            //1-Reduce the number of queries
+            //2-Get all data in one query
+
+            //cons:
+            //1-Get all data in one query Related data and Unrelated data
+
+            //var Employee = (from e in dbContext.Employees.Include(E=>E.Departments)
+            //                where e.Id == 5
+            //                select e).FirstOrDefault();
+
+            //Console.WriteLine($"name={Employee.EmpName}::{Employee.Departments.Name}");
+            //Console.WriteLine("=========================");
+            //var Department = (from d in dbContext.Departments.Include(D => D.Employees)
+            //                  where d.Id == 30
+            //                  select d).FirstOrDefault();
+
+            //foreach (var item in Department.Employees)
+            //{
+            //    Console.WriteLine($"Name={item.EmpName}");
+            //}
+            #endregion
+
+            #region Lazy Loading
+            //set Lazy Loading environment:
+            //1-Install Microsoft.EntityFrameworkCore.Proxies
+            //2-Add UseLazyLoadingProxies() in OnConfiguring Method
+            //3-Add Virtual Keyword in Navigation Property
+            //4-Make sure the Entities are Public
+
+            //Return selected data only
+
+            //var Employee = (from e in dbContext.Employees 
+            //                where e.Id == 5
+            //                select e).FirstOrDefault();
+
+            //Console.WriteLine($"name={Employee.EmpName}::{Employee.Departments.Name}");
+            #endregion
+            #endregion
 
         }
     }

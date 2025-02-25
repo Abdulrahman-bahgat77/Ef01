@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ef01.Entities
 {
-    internal class Employee
+    public class Employee
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -28,8 +28,10 @@ namespace Ef01.Entities
         public int Password { get; set; }
 
         [ForeignKey("Departments")]
-        public int? DepartmentsId { get; set; }
-        public Department Departments { get; set; }
+        public int? DepartmentId { get; set; }
+
+        [InverseProperty("Employees")]
+        public virtual Department Departments { get; set; }
         //Nevagation Property=>One
     }
 }

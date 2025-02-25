@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ef01.Entities
 {
-    internal class Projects
+    public class Projects
     {
         public int id { get; set; }
     }

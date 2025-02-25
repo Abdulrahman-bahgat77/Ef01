@@ -17,7 +17,7 @@ namespace Ef01.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
              
-            optionsBuilder.UseSqlServer("Server= .; Database = Enterprise;Trusted_Connection = true");
+            optionsBuilder.UseLazyLoadingProxies().UseSqlServer("Server= .; Database = Enterprise;Trusted_Connection = true;trustServerCertificate=true",X => X.UseDateOnlyTimeOnly());
         }
         public DbSet<Employee> Employees{ get; set; }
         public DbSet<Products> Products { get; set; }
@@ -84,8 +84,12 @@ namespace Ef01.Context
             modelBuilder.Entity<Department>()
               .HasMany(D => D.Employees)
               .WithOne(E => E.Departments)
-              .HasForeignKey(E => E.DepartmentsId)
+              .HasForeignKey(E => E.DepartmentId)
               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Department>()
+                .Property(D => D.DateOfCreation)
+                .HasDefaultValueSql("GETDATE()");
 
             //modelBuilder.Entity<Student>()
             //    .HasMany(S => S.Courses)

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Ef01.Entities
 {
-    class Student
+    public class Student
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public int? Age { get; set; }
 
         //public ICollection<Course> Courses { get; set; }
-        public ICollection<CourseStudent> CourseStudentes { get; set; }
+        public virtual ICollection<CourseStudent> CourseStudentes { get; set; }
     }
 }
